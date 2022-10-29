@@ -1,5 +1,6 @@
 package com.Portfolio.mgb.Controller;
 
+
 import com.Portfolio.mgb.Dto.dtoHys;
 import com.Portfolio.mgb.Entity.hys;
 import com.Portfolio.mgb.Security.Controller.Mensaje;
@@ -20,9 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/hys")
-@CrossOrigin(origins = "http://localhost:4200")
-//@CrossOrigin(origins = "https://frontend-cb799.web.app")
+@CrossOrigin(origins = {"https://frontend-cb799.web.app","http://localhost:4200"})
+@RequestMapping("/skill")
 public class CHys {
 
     @Autowired
@@ -45,13 +45,10 @@ public class CHys {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") int id) {
-        //Validamos si existe el ID
         if (!shys.existsById(id)) {
-            return new ResponseEntity(new Mensaje("El ID no existe"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Mensaje("no existe"), HttpStatus.NOT_FOUND);
         }
-
         shys.delete(id);
-
         return new ResponseEntity(new Mensaje("Skill eliminado"), HttpStatus.OK);
     }
 
@@ -76,8 +73,9 @@ public class CHys {
         if (!shys.existsById(id)) {
             return new ResponseEntity(new Mensaje("El ID no existe"), HttpStatus.BAD_REQUEST);
         }
-        //Compara nombre de skill
-        if (shys.existsByNombre(dtohys.getNombre()) && shys.getByNombre(dtohys.getNombre()).get().getId() != id) {
+        //Compara nombre de skills
+        if (shys.existsByNombre(dtohys.getNombre()) && shys.getByNombre(dtohys.getNombre()).get()
+                .getId() != id) {
             return new ResponseEntity(new Mensaje("Esa skill ya existe"), HttpStatus.BAD_REQUEST);
         }
         //No puede estar vacio
@@ -87,11 +85,10 @@ public class CHys {
 
         hys hYs = shys.getOne(id).get();
         hYs.setNombre(dtohys.getNombre());
-        hYs.setPorcentaje((dtohys.getPorcentaje()));
+        hYs.setPorcentaje(dtohys.getPorcentaje());
 
         shys.save(hYs);
         return new ResponseEntity(new Mensaje("Skill actualizada"), HttpStatus.OK);
 
     }
-
 }

@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { identifierName } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -8,10 +9,10 @@ import { Skill } from '../model/skill';
   providedIn: 'root'
 })
 export class SkillService {
-URL =  environment.URL + 'skill/';  
-
-  constructor(private httpClient: HttpClient) {}
+  URL = environment.URL + 'skill/';
   
+  constructor(private httpClient: HttpClient) { }
+
   public lista(): Observable<Skill[]>{
     return this.httpClient.get<Skill[]>(this.URL + 'lista');
   }
@@ -29,7 +30,6 @@ URL =  environment.URL + 'skill/';
   }
 
   public delete(id: number): Observable<any>{
-    return this.httpClient.delete<any>(this.URL + `delete/${id}`);
+    return this.httpClient.delete(this.URL + `delete/${id}`);
   }
-
 }
